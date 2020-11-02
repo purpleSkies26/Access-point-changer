@@ -17,14 +17,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
+#chooses linux driver if windows is not detected
 if platform.system() == "Windows":  # checking OS
     geckopath = "./geckodriver.exe" #driver path
 else:
     geckopath = "./geckodriver" #driver path
-
-#username and password
-user = input("Please enter your web portal's username:")
-password = input("Please enter your web portal's password:")
 
 
 def console_cleaner():
@@ -33,6 +30,10 @@ def console_cleaner():
                 clear = lambda: os.system('cls')
         else:
                 clear = lambda: os.system('clear')
+
+#username and password
+user = input("Please enter your web portal's username:")
+password = input("Please enter your web portal's password:")
 
 while True:
         try:
@@ -45,19 +46,41 @@ while True:
                 break
 
 
+def mode():
+        menu = """
+                1. Debugging mode
+                2. Production mode
+                """
+        print(menu)
+        target = input("Please choose mode:")
+        while True:
+                print(menu)
+                if target == "1":
+                        #may browser na mag pop up para makita niyo ung actions niya
+                        print("Running on debugging mode...")
+                        global driver
+                        driver = webdriver.Firefox(executable_path=geckopath)
+                        break
+                elif target == "2":
+                        #headless mode para walang browswer na mag pop up specifically for deployement
+                        print("Running on headless mode...")
+                        global options
+                        options = FirefoxOptions()
+                        options.add_argument("--headless")
+                        driver = webdriver.Firefox(executable_path=geckopath, options=options)
+                        break
+                else:
+                        print("Incorrect selection")
+                        exit()
+
+mode()
+
+
 def change_apn():
         print("Changing Access point...")
-        #loads gecko driver for firefox
-        options = FirefoxOptions()
-        
-        #activate headless mode uncomment niyo ung options.add_argument
-
-        options.add_argument("--headless")
-        driver = webdriver.Firefox(executable_path=geckopath, options=options)
+        #URL ng quicksetup niyo (eto ung may settings na clickable link (href tags))
         driver.get('http://192.168.8.1/html/quicksetup.html')
-        print("Headless mode initialized")
         # driver.set_window_size(1000, 800)
-
         #waits until element is clickable
         print("Logging In...")
         element = WebDriverWait(driver, 60).until(
@@ -87,7 +110,7 @@ def change_apn():
         #####################################################################
         driver.get('http://192.168.8.1/html/profilesmgr.html')
         # driver.set_window_size(1000, 800)
-        print("Login Success...")
+        print("Successully logined...")
         element = WebDriverWait(driver, 30).until(
                 EC.element_to_be_clickable((By.ID, "label_profile_management")))
         element = driver.find_element_by_xpath("//span[@id='label_profile_management']")
@@ -123,6 +146,7 @@ def change_apn():
                 sys.stderr.write('\r%4d' % i + " seconds remaining . . . .")
                 if i == 0:
                         clear()
+
 while True:
         console_cleaner() 
         change_apn()
