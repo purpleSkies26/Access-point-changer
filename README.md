@@ -33,6 +33,15 @@ Additional Information:
   Debuggging mode - gagamitin ung default Firefox
 
 Usage:
+
     "python apnchange.py"
+  
+  
+  
+Links: 
+   Python Download Page
+    https://www.python.org/downloads
+   Selenium Download Page
+    https://www.selenium.dev/downloads/
 
 
