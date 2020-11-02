@@ -17,6 +17,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
+#link ng quick set up niyo
+link1 = 'http://192.168.8.1/html/quicksetup.html'
+#link ng apn profile niyo
+link2 = 'http://192.168.8.1/html/profilesmgr.html'
+
+
 #chooses linux driver if windows is not detected
 if platform.system() == "Windows":  # checking OS
     geckopath = "./geckodriver.exe" #driver path
@@ -79,7 +85,7 @@ mode()
 def change_apn():
         print("Changing Access point...")
         #URL ng quicksetup niyo (eto ung may settings na clickable link (href tags))
-        driver.get('http://192.168.8.1/html/quicksetup.html')
+        driver.get(link1)
         # driver.set_window_size(1000, 800)
         #waits until element is clickable
         print("Logging In...")
@@ -108,7 +114,7 @@ def change_apn():
 
 
         #####################################################################
-        driver.get('http://192.168.8.1/html/profilesmgr.html')
+        driver.get(link2)
         # driver.set_window_size(1000, 800)
         print("Successully logined...")
         element = WebDriverWait(driver, 30).until(
